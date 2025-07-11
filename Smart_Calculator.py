@@ -1,16 +1,22 @@
 import streamlit as st
 import math
 
-st.set_page_config(page_title="Smart Calculator", page_icon="🧮", layout="centered")
-st.title("🧮 Smart Calculator App")
+# Page config
+st.set_page_config(page_title="Smart Calculator by Sakshi", page_icon="🧮", layout="centered")
 
-# Session state to store history
+# Title
+st.markdown("<h1 style='text-align: center;'>🧮 Smart Calculator</h1>", unsafe_allow_html=True)
+st.markdown("<h4 style='text-align: center; color: gray;'>Created by Sakshi Gupta</h4>", unsafe_allow_html=True)
+st.markdown("---")
+
+# Store history in session
 if "history" not in st.session_state:
     st.session_state.history = []
 
 # Operation selection
+st.subheader("🔧 Select Operation")
 operation = st.selectbox(
-    "Choose Operation",
+    "",
     [
         "Add", "Subtract", "Multiply", "Divide", "Power", "Modulus",
         "Square Root", "Logarithm (base 10)", 
@@ -18,16 +24,22 @@ operation = st.selectbox(
     ]
 )
 
-# Determine number of inputs needed
+# Input area
+st.subheader("🔢 Enter Numbers")
 single_input_ops = ["Square Root", "Logarithm (base 10)", "Sine", "Cosine", "Tangent"]
+
 if operation in single_input_ops:
     num1 = st.number_input("Enter number", value=0.0, format="%.4f", key="num1")
     num2 = None
 else:
-    num1 = st.number_input("Enter first number", value=0.0, format="%.4f", key="num1")
-    num2 = st.number_input("Enter second number", value=0.0, format="%.4f", key="num2")
+    col1, col2 = st.columns(2)
+    with col1:
+        num1 = st.number_input("First number", value=0.0, format="%.4f", key="num1")
+    with col2:
+        num2 = st.number_input("Second number", value=0.0, format="%.4f", key="num2")
 
 # Calculate button
+st.markdown("### 📤 Result")
 if st.button("Calculate"):
     result = None
     try:
@@ -55,7 +67,7 @@ if st.button("Calculate"):
             if num1 > 0:
                 result = math.log10(num1)
             else:
-                st.error("❌ Logarithm is undefined for zero or negative numbers!")
+                st.error("❌ Logarithm undefined for ≤ 0!")
         elif operation == "Sine":
             result = math.sin(math.radians(num1))
         elif operation == "Cosine":
@@ -70,13 +82,18 @@ if st.button("Calculate"):
     except Exception as e:
         st.error(f"❌ Error: {str(e)}")
 
-# Clear button
-if st.button("Clear History"):
-    st.session_state.history = []
-    st.info("🧹 History cleared!")
-
-# Show history
+# History
 if st.session_state.history:
+    st.markdown("---")
     st.subheader("📜 Calculation History")
     for i, item in enumerate(reversed(st.session_state.history), 1):
         st.text(f"{i}. {item}")
+
+# Clear history
+if st.button("🧹 Clear History"):
+    st.session_state.history = []
+    st.info("🧼 History cleared!")
+
+# Footer
+st.markdown("---")
+st.markdown("<p style='text-align: center; color: gray;'>Made with ❤️ using Streamlit by <strong>Sakshi Gupta</strong></p>", unsafe_allow_html=True)
