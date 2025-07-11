@@ -81,7 +81,7 @@ if st.button("🧹 Clear History"):
 
 st.markdown("---")
 
-# === Section 2: 📈 Financial & Math Tools ===
+# === Section 2: 📈 Financial & Mathematical Tools ===
 st.subheader("📈 Financial & Math Tools")
 
 # Tool selection
